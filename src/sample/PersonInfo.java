@@ -10,14 +10,14 @@ public class PersonInfo {
 		this.birth = birth;
 		this.group = group;
 		
-	} //»ı¼ºÀÚ
+	} //ìƒì„±ì
 	public void showInfo(){
-		System.out.println("ÀÌ¸§ : "+name);
-		System.out.println("ÀüÈ­¹øÈ£ : "+phone_num);
-		System.out.println("»ıÀÏ : "+birth);
-		System.out.println("±×·ì : "+group);
+		System.out.println("ì´ë¦„ : "+name);
+		System.out.println("ì „í™”ë²ˆí˜¸ : "+phone_num);
+		System.out.println("ìƒì¼ : "+birth);
+		System.out.println("ê·¸ë£¹ : "+group);
 		System.out.println("");
-	}//Á¤º¸ º¸¿©ÁÖ±â ¸Ş¼Òµå 
+	}//ì •ë³´ ë³´ì—¬ì£¼ê¸° ë©”ì†Œë“œ //
 	
 	public String get_group(){
 		return group;
@@ -45,10 +45,10 @@ public class PersonInfo {
 	}
 }
 /*
-class Friend extends PersonInfo{		//Ä£±¸ ±×·ì(°íµîÇĞ±³, ´ëÇĞ±³)
-	private String kind_f; //°íµùÄ£±¸¿Í ´ëµùÄ£±¸¸¦ ±¸ºĞÇÏ±âÀ§ÇÑ º¯¼ö Ãß°¡
+class Friend extends PersonInfo{		//ì¹œêµ¬ ê·¸ë£¹(ê³ ë“±í•™êµ, ëŒ€í•™êµ)
+	private String kind_f; //ê³ ë”©ì¹œêµ¬ì™€ ëŒ€ë”©ì¹œêµ¬ë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ ë³€ìˆ˜ ì¶”ê°€
 	public Friend(String name, String phone_num, String birth, String kind){
-		super(name, phone_num, birth, group);		//»óÀ§Å¬·¡½ºÀÇ »ı¼ºÀÚ¸¦ È£Ãâ ÇÏ¸é¼­ ÆÄ¶ó¹ÌÅÍ¸¦ Àü´Ş
+		super(name, phone_num, birth, group);		//ìƒìœ„í´ë˜ìŠ¤ì˜ ìƒì„±ìë¥¼ í˜¸ì¶œ í•˜ë©´ì„œ íŒŒë¼ë¯¸í„°ë¥¼ ì „ë‹¬
 		this.kind_f = kind;
 	}
 	public void showInfos(){
@@ -63,7 +63,7 @@ class Friend extends PersonInfo{		//Ä£±¸ ±×·ì(°íµîÇĞ±³, ´ëÇĞ±³)
 	}
 }
 
-class Relative extends PersonInfo{		//Ä£Ã´±×·ì(¿Ü°¡ , Ä£°¡)
+class Relative extends PersonInfo{		//ì¹œì²™ê·¸ë£¹(ì™¸ê°€ , ì¹œê°€)
 	private String kind_r;
 	public Relative(String name, String phone_num, String birth, String kind){
 		super(name, phone_num, birth);
