@@ -1,24 +1,33 @@
 package sample;
 public class PersonInfo {
+	private int count;
 	private String name;
 	private String phone_num;
 	private String birth;
 	private String group;
-	public PersonInfo(String name, String phone_num, String birth, String group){
+	private String memo;
+	public PersonInfo(int count,String name, String phone_num, String birth, String group,String memo){
+		this.count = count;
 		this.name = name;
 		this.phone_num = phone_num;
 		this.birth = birth;
 		this.group = group;
+		this.memo = memo;
 		
-	} //ìƒì„±ì
+	} //»ı¼ºÀÚ
 	public void showInfo(){
-		System.out.println("ì´ë¦„ : "+name);
-		System.out.println("ì „í™”ë²ˆí˜¸ : "+phone_num);
-		System.out.println("ìƒì¼ : "+birth);
-		System.out.println("ê·¸ë£¹ : "+group);
+		System.out.println("ÀÌ¸§ : "+name);
+		System.out.println("ÀüÈ­¹øÈ£ : "+phone_num);
+		System.out.println("»ıÀÏ : "+birth);
+		System.out.println("±×·ì : "+group);
 		System.out.println("");
-	}//ì •ë³´ ë³´ì—¬ì£¼ê¸° ë©”ì†Œë“œ //
-	
+	}//Á¤º¸ º¸¿©ÁÖ±â ¸Ş¼Òµå 
+	public int get_count(){
+		return count;
+	}
+	public String get_memo(){
+		return memo;
+	}
 	public String get_group(){
 		return group;
 	}
@@ -45,10 +54,10 @@ public class PersonInfo {
 	}
 }
 /*
-class Friend extends PersonInfo{		//ì¹œêµ¬ ê·¸ë£¹(ê³ ë“±í•™êµ, ëŒ€í•™êµ)
-	private String kind_f; //ê³ ë”©ì¹œêµ¬ì™€ ëŒ€ë”©ì¹œêµ¬ë¥¼ êµ¬ë¶„í•˜ê¸°ìœ„í•œ ë³€ìˆ˜ ì¶”ê°€
+class Friend extends PersonInfo{		//Ä£±¸ ±×·ì(°íµîÇĞ±³, ´ëÇĞ±³)
+	private String kind_f; //°íµùÄ£±¸¿Í ´ëµùÄ£±¸¸¦ ±¸ºĞÇÏ±âÀ§ÇÑ º¯¼ö Ãß°¡
 	public Friend(String name, String phone_num, String birth, String kind){
-		super(name, phone_num, birth, group);		//ìƒìœ„í´ë˜ìŠ¤ì˜ ìƒì„±ìë¥¼ í˜¸ì¶œ í•˜ë©´ì„œ íŒŒë¼ë¯¸í„°ë¥¼ ì „ë‹¬
+		super(name, phone_num, birth, group);		//»óÀ§Å¬·¡½ºÀÇ »ı¼ºÀÚ¸¦ È£Ãâ ÇÏ¸é¼­ ÆÄ¶ó¹ÌÅÍ¸¦ Àü´Ş
 		this.kind_f = kind;
 	}
 	public void showInfos(){
@@ -63,7 +72,7 @@ class Friend extends PersonInfo{		//ì¹œêµ¬ ê·¸ë£¹(ê³ ë“±í•™êµ, ëŒ€í•™êµ)
 	}
 }
 
-class Relative extends PersonInfo{		//ì¹œì²™ê·¸ë£¹(ì™¸ê°€ , ì¹œê°€)
+class Relative extends PersonInfo{		//Ä£Ã´±×·ì(¿Ü°¡ , Ä£°¡)
 	private String kind_r;
 	public Relative(String name, String phone_num, String birth, String kind){
 		super(name, phone_num, birth);
