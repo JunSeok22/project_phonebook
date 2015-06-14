@@ -15,12 +15,15 @@ public class PersonInfo {
 		this.memo = memo;
 		
 	} //생성자
-	public void showInfo(){
-		System.out.println("이름 : "+name);
-		System.out.println("전화번호 : "+phone_num);
-		System.out.println("생일 : "+birth);
-		System.out.println("그룹 : "+group);
-		System.out.println("");
+	public String showInfo(){
+		return "이름 : "+name+"\n"+"전화번호 : "+ phone_num +"\n"+"생일 : "+birth+"\n"+"그룹 : "+group+"\n"+"MEMO : "+"\n"+memo+"\n";
+//		System.out.println("이름 : "+name);
+//		System.out.println("전화번호 : "+phone_num);
+//		System.out.println("생일 : "+birth);
+//		System.out.println("그룹 : "+group);
+//		System.out.println("MEMO : ");
+//		System.out.println(memo);
+//		System.out.println("");
 	}//정보 보여주기 메소드 
 	public int get_count(){
 		return count;
@@ -52,41 +55,7 @@ public class PersonInfo {
 	public void set_group(String group){
 		this.group = group;
 	}
-}
-/*
-class Friend extends PersonInfo{		//친구 그룹(고등학교, 대학교)
-	private String kind_f; //고딩친구와 대딩친구를 구분하기위한 변수 추가
-	public Friend(String name, String phone_num, String birth, String kind){
-		super(name, phone_num, birth, group);		//상위클래스의 생성자를 호출 하면서 파라미터를 전달
-		this.kind_f = kind;
-	}
-	public void showInfos(){
-		super.showInfo();		
-		System.out.println(kind_f);
-	}
-	public String get_kind(){
-		return kind_f;
-	}
-	public void set_kind_f(String kind){
-		this.kind_f = kind;
+	public void set_memo(String memo){
+		this.memo = memo;
 	}
 }
-
-class Relative extends PersonInfo{		//친척그룹(외가 , 친가)
-	private String kind_r;
-	public Relative(String name, String phone_num, String birth, String kind){
-		super(name, phone_num, birth);
-		this.kind_r = kind;
-	}
-	public void showInfos(){
-		super.showInfo();
-		System.out.println(kind_r);
-	}
-	public String get_kind_r(){
-		return kind_r;
-	}
-	public void set_kind_r(String kind){
-		this.kind_r = kind;
-	}
-}
-*/

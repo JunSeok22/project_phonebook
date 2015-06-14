@@ -3,6 +3,7 @@ package sample;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 
 public class Info_GUI extends javax.swing.JFrame {
 	JFrame fr = new JFrame("PersonInfo Book");
@@ -36,14 +39,19 @@ public class Info_GUI extends javax.swing.JFrame {
 	JButton Info_btn = new JButton("보기"); // 보기패널 화면으로 전환하는 버튼
 	JButton del_btn = new JButton("삭제하기");
 	JButton modify_btn = new JButton("수정하기"); 
+	JButton com_btn = new JButton("완료"); 
 	JPanel search_BP = new JPanel(); // 검색화면에서 검색필드와 검색버튼이 있는패널
 	JPanel menu_btn_Pan = new JPanel(); // 검색화면에서 하단의 여러메뉴버튼이 있는 패널
 	JPanel Login = new JPanel(); // 맨처음 로그인 패널
 	JTextField searchBar = new JTextField(15); // 검색 텍스트 필드 + 길이
 	JComboBox<String> c = new JComboBox<String>(); // 그룹종류 표시
 	private JTextField[] fields; // 여러개 필드를 배열에 저장(추가 패널에서 이름,번호,생일)
+	private JTextField[] field; // 여러개 필드를 배열에 저장(수정 패널에서 이름,번호,생일)
 	JTable table = new JTable();// 검색결과를 테이블형식으로 만듬
 	JTextArea ja; // memo area
+	JTextArea jta;	// modify memo area
+	Border bd; // 테두리 표시
+	
 	
 	public Info_GUI() { // 생성자
 		run();
@@ -80,10 +88,13 @@ public class Info_GUI extends javax.swing.JFrame {
 		JScrollPane scrollP = new JScrollPane(); // 테이블이 들어갈 스크롤 패널
 		table.setModel(new table_system(new ArrayList<PersonInfo>()));//
 		scrollP.setViewportView(table);
-
+		bd = BorderFactory.createEtchedBorder();
+		bd = BorderFactory.createTitledBorder(bd, " 검색하기 ");
 		search_BP.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20)); //버튼 패널 배치관리자 , 수평 수직 갭크기
 		search_BP.add(searchBar);
 		search_BP.add(search_btn);
+		search_BP.setBorder(bd);
+		
 		menu_btn_Pan.add(add_btn);
 		menu_btn_Pan.add(Info_btn);
 		menu_btn_Pan.add(del_btn);
@@ -96,6 +107,7 @@ public class Info_GUI extends javax.swing.JFrame {
 		searchPan.add(scrollP, BorderLayout.CENTER);
 
 		searchPan.add(menu_btn_Pan, BorderLayout.SOUTH);
+		
 		// ////////////////////////////여기까지 검색화면 설정
 
 		pan.add(searchPan, "SP"); // 검색패널 붙히기 + 호출은 SP
@@ -152,7 +164,8 @@ public class Info_GUI extends javax.swing.JFrame {
 				j.setVisible(true);
 			}
 		});// 추가기능 메소드
-
+		
+		
 		search_btn.addActionListener(new ActionListener() { // 검색버튼
 			public void actionPerformed(ActionEvent e) {
 				String search_quary = searchBar.getText();	//검색 값
@@ -193,11 +206,87 @@ public class Info_GUI extends javax.swing.JFrame {
 			}
 		});
 		
-		modify_btn.addActionListener(new ActionListener() {	//수정버튼
+		////////////////////////
+		modify_btn.addActionListener(new ActionListener() {	//수정버튼 - 추가 프레임에서 내용을 채워서 보여주고 내용을 완료버튼을 누르면  setter로 값을 바꾼다.
 			public void actionPerformed(ActionEvent e) {
-				int row = table.getSelectedRow();
-				int col = table.getSelectedColumn();
+				InfoManager im = new InfoManager();
+				im.Load_data();
 				
+				int row = table.getSelectedRow();
+				
+				JFrame j = new JFrame("수정하기");
+				field = new JTextField[3]; 					
+				JPanel fieldPanel = new JPanel(new GridLayout(5, 1)); // 그룹필드 + memo area 까지 5개 들어감
+				JPanel btnPanel = new JPanel();
+
+				btnPanel.add(com_btn); // 완료버튼
+				JPanel p1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				JLabel lab1 = new JLabel("이름 : ", JLabel.RIGHT);// 각각의 라벨
+																		// 생성
+				p1.add(lab1); // 라벨패널
+				
+				field[0] = new JTextField(im.Infos.get(row).get_name()); // 이름필드에 선택된 객체의 이름값 넣어서 생성
+				field[0].setColumns(10); // 텍스트필드 길이설정
+				p1.add(field[0]);// 필드패널에 각각의 필드 입력
+				fieldPanel.add(p1);
+				//이름
+				
+				JPanel p2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				JLabel lab2 = new JLabel("번호 : ", JLabel.RIGHT);// 각각의 라벨
+																		// 생성
+				p2.add(lab2); // 라벨패널
+				field[1] = new JTextField(im.Infos.get(row).get_phone_num()); 
+				field[1].setColumns(10); // 텍스트필드 길이설정
+				p2.add(field[1]);// 필드패널에 각각의 필드 입력
+				fieldPanel.add(p2);
+				//번호
+				
+				JPanel p3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				JLabel lab3 = new JLabel("생일 : ", JLabel.RIGHT);
+				p3.add(lab3); // 라벨패널
+				field[2] = new JTextField(im.Infos.get(row).get_birth()); 
+				field[2].setColumns(10); // 텍스트필드 길이설정
+				p3.add(field[2]);// 필드패널에 각각의 필드 입력
+				fieldPanel.add(p3);
+				//생일
+				
+				
+				//}
+				JPanel p4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				JLabel label = new JLabel("그룹 : ", JLabel.RIGHT);
+				p4.add(label);
+				c.addItem("친구");
+				c.addItem("친척");
+				c.addItem("학교");
+				c.addItem("지인");
+				c.addItem("가족");
+				p4.add(c);
+				fieldPanel.add(p4);
+
+				JPanel jp = new JPanel(new FlowLayout(FlowLayout.CENTER));// memo textarea panel
+				jta = new JTextArea(im.Infos.get(row).get_memo(), 7, 20);
+				jp.add(jta);
+				fieldPanel.add(jp);// memo
+
+				addPan.setLayout(new BorderLayout());
+				addPan.add(btnPanel, BorderLayout.SOUTH);
+				addPan.add(fieldPanel, BorderLayout.CENTER);
+				j.add(addPan);
+				j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); // 종료버튼누르면 프로그램종료
+				j.setSize(300, 400);
+				j.setVisible(true);
+				
+			}
+		});
+		
+		com_btn.addActionListener(new ActionListener() {	// 완료버튼 수정화면에서 입력된각각의 값들을 setter
+			public void actionPerformed(ActionEvent e) {
+				String name = get_Text(0); // 첫번째 필드 텍스트 입력값
+				String num = get_Text(1);
+				String birth = get_Text(2);
+				String group = (String) c.getSelectedItem();// combobox's item
+				String memo = jta.getText();
+				saveEvent(name, num, birth, group, memo); // 데이터 저장 메소드
 			}
 		});
 
@@ -225,28 +314,36 @@ public class Info_GUI extends javax.swing.JFrame {
 		});
 		
 		
-		///																							수정중!!!!!1
+		///													
 		Info_btn.addActionListener(new ActionListener() { // 버튼입력을 하면 목록에서 선택된
 															// 객체의 정보를 표시
 			public void actionPerformed(ActionEvent e) {
 				// 정보화면 설정
+				bd = BorderFactory.createEtchedBorder();
+				bd = BorderFactory.createTitledBorder(bd, " 세부정보 ");
 				JPanel Info_Pan = new JPanel();
 				Info_Pan.setLayout(new BorderLayout());
 				JPanel IbtnP = new JPanel();
-				JScrollPane js = new JScrollPane();
-				JTextArea show = new JTextArea();
-				js.add(show);
+				JPanel jp = new JPanel();	//textarea 들어갈 패널
+				JTextArea show = new JTextArea(10,18);	//텍스트에어리어는 자동으로 스크롤이 생김
+				jp.add(show);
+				jp.setBorder(bd);
 				IbtnP.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 20)); // 버튼 오른정렬
-				JButton bb = new JButton();
-				IbtnP.add(bb);
-				Info_Pan.add(js, BorderLayout.CENTER);// 자세한 정보 보여주기
+				IbtnP.add(del_btn);
+				Info_Pan.add(jp, BorderLayout.CENTER);// 자세한 정보 보여주기
 				Info_Pan.add(IbtnP, BorderLayout.SOUTH);// 버튼패널
 				// /////////////////////////여기까지 정보화면 설정
+				int row = table.getSelectedRow();
+			
+				InfoManager i = new InfoManager();
+				i.Load_data();
 				
-				JFrame j = new JFrame();
+				show.append(i.Infos.get(row).showInfo());
+				
+				JFrame j = new JFrame("자세히보기");
 				j.add(Info_Pan);
 				j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); 
-				j.setSize(500, 500);
+				j.setSize(245, 325);
 				j.setVisible(true);
 			}
 		});
@@ -308,8 +405,12 @@ public class Info_GUI extends javax.swing.JFrame {
 	}// run 메소드
 
 	// textfields에서 사용자가 입력한 값을 받아오기위한 함수
-	public String getText(int i) {
+	public String getText(int i) {	// 추가에서 텍스트값 리턴
 		return (fields[i].getText());
+	}
+	
+	public String get_Text(int i) {	// 수정화면에서 텍스트값 리턴
+		return (field[i].getText());
 	}
 
 	public void saveEvent(String name, String num, String birth, String group,
