@@ -214,7 +214,7 @@ public class Info_GUI extends javax.swing.JFrame {
 				
 				int row = table.getSelectedRow();
 				
-				JFrame j = new JFrame("수정하기");
+				
 				field = new JTextField[3]; 					
 				JPanel fieldPanel = new JPanel(new GridLayout(5, 1)); // 그룹필드 + memo area 까지 5개 들어감
 				JPanel btnPanel = new JPanel();
@@ -271,6 +271,8 @@ public class Info_GUI extends javax.swing.JFrame {
 				addPan.setLayout(new BorderLayout());
 				addPan.add(btnPanel, BorderLayout.SOUTH);
 				addPan.add(fieldPanel, BorderLayout.CENTER);
+				
+				JFrame j = new JFrame("수정하기");
 				j.add(addPan);
 				j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); // 종료버튼누르면 프로그램종료
 				j.setSize(300, 400);
@@ -286,7 +288,8 @@ public class Info_GUI extends javax.swing.JFrame {
 				String birth = get_Text(2);
 				String group = (String) c.getSelectedItem();// combobox's item
 				String memo = jta.getText();
-				saveEvent(name, num, birth, group, memo); // 데이터 저장 메소드
+				int row = table.getSelectedRow();
+				comEvent(name, num, birth, group, memo, row); // 데이터 저장 메소드
 			}
 		});
 
@@ -339,6 +342,7 @@ public class Info_GUI extends javax.swing.JFrame {
 				i.Load_data();
 				
 				show.append(i.Infos.get(row).showInfo());
+				show.setEditable(false);	//수정불가능
 				
 				JFrame j = new JFrame("자세히보기");
 				j.add(Info_Pan);
@@ -411,6 +415,18 @@ public class Info_GUI extends javax.swing.JFrame {
 	
 	public String get_Text(int i) {	// 수정화면에서 텍스트값 리턴
 		return (field[i].getText());
+	}
+	
+	public void comEvent(String name, String num, String birth, String group, String memo, int row){
+		InfoManager i = new InfoManager();
+		i.Load_data();
+		i.Infos.get(row).set_name(name);
+		i.Infos.get(row).set_phone_num(num);
+		i.Infos.get(row).set_birth(birth);
+		i.Infos.get(row).set_group(group);
+		i.Infos.get(row).set_memo(memo);
+		i.save_data();
+		table.setModel(new table_system(i.Infos));	
 	}
 
 	public void saveEvent(String name, String num, String birth, String group,
