@@ -32,12 +32,12 @@ public class Info_GUI extends javax.swing.JFrame {
 	JFrame fr = new JFrame("PersonInfo Book");
 	JPanel pan = new JPanel(); // 기본패널
 	JPanel searchPan = new JPanel();// 검색패널
-	JPanel addPan = new JPanel(); // 추가화면
 	JButton search_btn = new JButton("SEARCH"); // 검색 기능을 수행하는 버튼
 	JButton save_btn = new JButton("저장하기"); // 저장기능을 수행하는 버튼
 	JButton add_btn = new JButton("추가하기"); // 추가하기
 	JButton Info_btn = new JButton("보기"); // 보기패널 화면으로 전환하는 버튼
 	JButton del_btn = new JButton("삭제하기");
+	JButton del_btn1 = new JButton("삭제하기");
 	JButton modify_btn = new JButton("수정하기"); 
 	JButton com_btn = new JButton("완료"); 
 	JPanel search_BP = new JPanel(); // 검색화면에서 검색필드와 검색버튼이 있는패널
@@ -97,7 +97,7 @@ public class Info_GUI extends javax.swing.JFrame {
 		
 		menu_btn_Pan.add(add_btn);
 		menu_btn_Pan.add(Info_btn);
-		menu_btn_Pan.add(del_btn);
+		menu_btn_Pan.add(del_btn1);
 		menu_btn_Pan.add(modify_btn);
 
 		table.setModel(new table_system(new ArrayList<PersonInfo>()));
@@ -119,6 +119,7 @@ public class Info_GUI extends javax.swing.JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JFrame j = new JFrame("추가하기");
 				// 추가화면 설정
+				JPanel addPan = new JPanel(); // 추가화면 패널
 				String[] labels = { "이름 : ", "번호 : ", "생일 : " }; // 라벨 이름 지정
 				int[] widths = { 10, 10, 10 }; // 길이 지정
 				fields = new JTextField[labels.length]; // 라벨길이 만큼 입력필드생성 그룹은
@@ -128,7 +129,7 @@ public class Info_GUI extends javax.swing.JFrame {
 				JPanel btnPanel = new JPanel();
 
 				btnPanel.add(save_btn);
-
+				
 				for (int i = 0; i < labels.length; i += 1) {
 					JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
 					JLabel lab = new JLabel(labels[i], JLabel.RIGHT);// 각각의 라벨
@@ -139,6 +140,7 @@ public class Info_GUI extends javax.swing.JFrame {
 					p.add(fields[i]);// 필드패널에 각각의 필드 입력
 					fieldPanel.add(p);
 				}
+				
 				JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
 				JLabel lab = new JLabel("그룹 : ", JLabel.RIGHT);
 				p.add(lab);
@@ -148,6 +150,7 @@ public class Info_GUI extends javax.swing.JFrame {
 				c.addItem("지인");
 				c.addItem("가족");
 				p.add(c);
+				
 				fieldPanel.add(p);
 
 				JPanel jp = new JPanel(new FlowLayout(FlowLayout.CENTER));// memo textarea panel
@@ -158,6 +161,8 @@ public class Info_GUI extends javax.swing.JFrame {
 				addPan.setLayout(new BorderLayout());
 				addPan.add(btnPanel, BorderLayout.SOUTH);
 				addPan.add(fieldPanel, BorderLayout.CENTER);
+				
+				j.toFront(); 	//맨앞에보이기
 				j.add(addPan);
 				j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); // 종료버튼누르면 프로그램종료
 				j.setSize(300, 400);
@@ -212,33 +217,32 @@ public class Info_GUI extends javax.swing.JFrame {
 				InfoManager im = new InfoManager();
 				im.Load_data();
 				
+				JPanel modiPan = new JPanel(); //수정화면
+				
 				int row = table.getSelectedRow();
 				
-				
 				field = new JTextField[3]; 					
-				JPanel fieldPanel = new JPanel(new GridLayout(5, 1)); // 그룹필드 + memo area 까지 5개 들어감
+				JPanel fieldPane = new JPanel(new GridLayout(5, 1)); // 그룹필드 + memo area 까지 5개 들어감
 				JPanel btnPanel = new JPanel();
 
 				btnPanel.add(com_btn); // 완료버튼
 				JPanel p1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 				JLabel lab1 = new JLabel("이름 : ", JLabel.RIGHT);// 각각의 라벨
-																		// 생성
 				p1.add(lab1); // 라벨패널
 				
 				field[0] = new JTextField(im.Infos.get(row).get_name()); // 이름필드에 선택된 객체의 이름값 넣어서 생성
 				field[0].setColumns(10); // 텍스트필드 길이설정
 				p1.add(field[0]);// 필드패널에 각각의 필드 입력
-				fieldPanel.add(p1);
+				fieldPane.add(p1);
 				//이름
 				
 				JPanel p2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 				JLabel lab2 = new JLabel("번호 : ", JLabel.RIGHT);// 각각의 라벨
-																		// 생성
 				p2.add(lab2); // 라벨패널
 				field[1] = new JTextField(im.Infos.get(row).get_phone_num()); 
 				field[1].setColumns(10); // 텍스트필드 길이설정
 				p2.add(field[1]);// 필드패널에 각각의 필드 입력
-				fieldPanel.add(p2);
+				fieldPane.add(p2);
 				//번호
 				
 				JPanel p3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -247,11 +251,9 @@ public class Info_GUI extends javax.swing.JFrame {
 				field[2] = new JTextField(im.Infos.get(row).get_birth()); 
 				field[2].setColumns(10); // 텍스트필드 길이설정
 				p3.add(field[2]);// 필드패널에 각각의 필드 입력
-				fieldPanel.add(p3);
+				fieldPane.add(p3);
 				//생일
 				
-				
-				//}
 				JPanel p4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 				JLabel label = new JLabel("그룹 : ", JLabel.RIGHT);
 				p4.add(label);
@@ -261,19 +263,23 @@ public class Info_GUI extends javax.swing.JFrame {
 				c.addItem("지인");
 				c.addItem("가족");
 				p4.add(c);
-				fieldPanel.add(p4);
+				fieldPane.add(p4);
 
 				JPanel jp = new JPanel(new FlowLayout(FlowLayout.CENTER));// memo textarea panel
 				jta = new JTextArea(im.Infos.get(row).get_memo(), 7, 20);
 				jp.add(jta);
-				fieldPanel.add(jp);// memo
+				fieldPane.add(jp);// memo
+				
+				//*******************************************************************************************************************
+				System.out.println(im.Infos.get(row).get_memo()); 	//console에 선태바꿀때마다 찍어보기
 
-				addPan.setLayout(new BorderLayout());
-				addPan.add(btnPanel, BorderLayout.SOUTH);
-				addPan.add(fieldPanel, BorderLayout.CENTER);
+				modiPan.setLayout(new BorderLayout());
+				modiPan.add(btnPanel, BorderLayout.SOUTH);
+				modiPan.add(fieldPane, BorderLayout.CENTER);
 				
 				JFrame j = new JFrame("수정하기");
-				j.add(addPan);
+				j.add(modiPan);
+				j.toFront();
 				j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); // 종료버튼누르면 프로그램종료
 				j.setSize(300, 400);
 				j.setVisible(true);
@@ -293,7 +299,18 @@ public class Info_GUI extends javax.swing.JFrame {
 			}
 		});
 
-		del_btn.addActionListener(new ActionListener() {
+		del_btn.addActionListener(new ActionListener() {	// 보기패널에서 삭제
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				InfoManager i = new InfoManager();
+				i.Load_data();
+				i.Infos.remove(row); // 삭제
+				i.save_data();	//데이터 베이스 다시 씀
+				table.setModel(new table_system(i.Infos));
+			}
+		});
+		
+		del_btn1.addActionListener(new ActionListener() {	//검색화면에서 삭제
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
 				InfoManager i = new InfoManager();
@@ -406,6 +423,8 @@ public class Info_GUI extends javax.swing.JFrame {
 		fr.pack();
 		fr.setSize(380, 180);
 		fr.setVisible(true);
+		//fr.setLocationRelativeTo(null);	//창을 가운데로
+		
 	}// run 메소드
 
 	// textfields에서 사용자가 입력한 값을 받아오기위한 함수
